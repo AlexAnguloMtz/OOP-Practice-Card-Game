@@ -8,7 +8,7 @@ import static java.lang.String.format;
 
 public class DeckTest extends AbstractTest {
 
-    public static void main(String args[] ) {
+    public static void main(String[] args) {
 
         Deck deck = new Deck();
 

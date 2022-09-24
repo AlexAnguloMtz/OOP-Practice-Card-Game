@@ -54,19 +54,16 @@ public class DeckHand implements Comparable<DeckHand> {
      *
      * @param other the hand to be compared
      * @return A value higher than 0 if this hand's value is greater than the compared hand,
-     *         or a value lower than 0 otherwise.
+     * or a value lower than 0 otherwise.
      */
     @Override
     public int compareTo(DeckHand other) {
         return compareRankingsWith(other);
     }
 
-    private int compareRankingsWith(DeckHand other) {
-        return ranking().compareTo(other.ranking());
-    }
 
     public boolean hasDifferentRankingThan(DeckHand second) {
-        return ! ranking().equals(second.ranking());
+        return !ranking().equals(second.ranking());
     }
 
     public HandRanking ranking() {
@@ -88,26 +85,6 @@ public class DeckHand implements Comparable<DeckHand> {
         return range(0, HAND_SIZE)
                 .mapToObj(eachIteration -> deck.draw())
                 .collect(toList());
-    }
-
-    private Rank highest() {
-        return Rank.highestOf(uniqueRanksInHand());
-    }
-
-    private Rank lowest() {
-        return Rank.lowestOf(uniqueRanksInHand());
-    }
-
-    private Set<Rank> uniqueRanksInHand() {
-        return sortedCards.stream()
-                .map(Card::getRank)
-                .collect(toSet());
-    }
-
-    private Set<Suit> uniqueSuitsInHand() {
-        return sortedCards.stream()
-                .map(Card::getSuit)
-                .collect(toSet());
     }
 
     public int amountOfUniqueSuits() {
@@ -146,19 +123,15 @@ public class DeckHand implements Comparable<DeckHand> {
         return amountOfPairs() == 2;
     }
 
-    private int amountOfPairs() {
-        final int repetitionsInAPair = 2;
-        return cardsWithNumberOfRepetitions(repetitionsInAPair);
+    public boolean hasThreeOfAKind() {
+        final int requiredRepetitionsForThreeOfAKind = 3;
+        return isAnyCardRepeated(requiredRepetitionsForThreeOfAKind);
     }
 
-    private int cardsWithNumberOfRepetitions(int numberOfRepetitions) {
-        Repetitions<Rank> repetitions = Repetitions.in(allRanks());
-
-        List<Rank> ranksWithSpecifiedNumberOfRepetitions =
-                repetitions.elementsWithNumberOfRepetitions(numberOfRepetitions);
-
-        return ranksWithSpecifiedNumberOfRepetitions.size();
+    public int highCardComparisonWith(DeckHand other) {
+        return highest().compareTo(other.highest());
     }
+
 
     public List<Card> cards() {
         return unmodifiableList(sortedCards);
@@ -168,10 +141,17 @@ public class DeckHand implements Comparable<DeckHand> {
         return HandComparison.of(this, otherHand);
     }
 
-    private List<Card> sort(Collection<? extends Card> cards) {
-        return cards.stream()
-                .sorted()
-                .collect(toList());
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DeckHand deckHand = (DeckHand) o;
+        return sortedCards.equals(deckHand.sortedCards);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sortedCards);
     }
 
     @Override
@@ -181,20 +161,54 @@ public class DeckHand implements Comparable<DeckHand> {
                 '}';
     }
 
-    public int highCardComparisonWith(DeckHand other) {
-        return highest().compareTo(other.highest());
-    }
-
-    private int compareCardsAt(int position, DeckHand other) {
-        return cardAt(position).compareTo(other.cardAt(position));
-    }
 
     private Card cardAt(int position) {
         return sortedCards.get(position);
     }
 
-    public boolean hasThreeOfAKind() {
-        final int requiredRepetitionsForThreeOfAKind = 3;
-        return isAnyCardRepeated(requiredRepetitionsForThreeOfAKind);
+    private int amountOfPairs() {
+        final int repetitionsInAPair = 2;
+        return cardsWithNumberOfRepetitions(repetitionsInAPair);
     }
+    private int cardsWithNumberOfRepetitions(int numberOfRepetitions) {
+        Repetitions<Rank> repetitions = Repetitions.in(allRanks());
+
+        List<Rank> ranksWithSpecifiedNumberOfRepetitions =
+                repetitions.elementsWithNumberOfRepetitions(numberOfRepetitions);
+
+        return ranksWithSpecifiedNumberOfRepetitions.size();
+    }
+
+    private int compareRankingsWith(DeckHand other) {
+        return ranking().compareTo(other.ranking());
+    }
+
+    private Rank highest() {
+        return Rank.highestOf(uniqueRanksInHand());
+    }
+
+    private Rank lowest() {
+        return Rank.lowestOf(uniqueRanksInHand());
+    }
+
+
+    private Set<Rank> uniqueRanksInHand() {
+        return sortedCards.stream()
+                .map(Card::getRank)
+                .collect(toSet());
+    }
+
+    private Set<Suit> uniqueSuitsInHand() {
+        return sortedCards.stream()
+                .map(Card::getSuit)
+                .collect(toSet());
+    }
+
+    private List<Card> sort(Collection<? extends Card> cards) {
+        return cards.stream()
+                .sorted()
+                .collect(toList());
+    }
+
+
 }

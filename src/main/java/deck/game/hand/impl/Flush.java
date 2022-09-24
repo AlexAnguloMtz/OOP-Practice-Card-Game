@@ -5,7 +5,7 @@ import deck.game.hand.DeckHand;
 
 interface Flush {
 
-    public static final int AMOUNT_OF_SUITS_IN_A_FLUSH = 1;
+    int AMOUNT_OF_SUITS_IN_A_FLUSH = 1;
 
     /**
      * A flush happens when all the five cards have the same suit

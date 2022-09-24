@@ -10,8 +10,6 @@ import static deck.game.hand.Ranking.THREE_OF_A_KIND;
  */
 class ThreeOfAKind implements HandRanking {
 
-    private static final int REQUIRED_RANK_REPETITIONS = 3;
-
     @Override
     public String name() {
         return THREE_OF_A_KIND.toString();

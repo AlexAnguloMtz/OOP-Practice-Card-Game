@@ -14,7 +14,7 @@ import static java.util.Collections.min;
 
 public class CardTest extends AbstractTest {
 
-    public static void main(String args[] ) {
+    public static void main(String[] args) {
 
         List<Card> hand = new ArrayList<>();
 

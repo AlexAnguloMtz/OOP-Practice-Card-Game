@@ -14,15 +14,6 @@ public class Card implements Comparable<Card> {
         this.rank = rank;
     }
 
-    public Rank getRank() {
-        return rank;
-    }
-
-    public Suit getSuit() {
-        return suit;
-    }
-
-
     public static Card getCard() {
         return new Card(randomSuit(), randomRank());
     }
@@ -39,15 +30,18 @@ public class Card implements Comparable<Card> {
         return Random.pickOne(elements);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof Card))
-            return false;
-        Card card = (Card) o;
-        return rank == card.rank && suit == card.suit;
+    public char suitSymbol() {
+        return suit.symbol();
     }
+
+    public Rank getRank() {
+        return rank;
+    }
+
+    public Suit getSuit() {
+        return suit;
+    }
+
 
     @Override
     public int compareTo(Card other) {
@@ -59,6 +53,16 @@ public class Card implements Comparable<Card> {
 
     private boolean differentRankThan(Card other) {
         return ! rank.equals(other.rank);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Card))
+            return false;
+        Card card = (Card) o;
+        return rank == card.rank && suit == card.suit;
     }
 
     @Override
@@ -74,7 +78,4 @@ public class Card implements Comparable<Card> {
                 '}';
     }
 
-    public char suitSymbol() {
-        return suit.symbol();
-    }
 }
