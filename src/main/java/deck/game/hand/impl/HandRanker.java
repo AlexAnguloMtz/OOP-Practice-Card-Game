@@ -20,7 +20,7 @@ public final class HandRanker {
             new HighCard()
     );
 
-    public static HandRanking from(DeckHand hand) {
+    public static HandRanking rank(DeckHand hand) {
         return RANKINGS.stream()
                 .filter(ranking -> ranking.evaluate(hand))
                 .findFirst()

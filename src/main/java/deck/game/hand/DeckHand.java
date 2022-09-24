@@ -70,7 +70,7 @@ public class DeckHand implements Comparable<DeckHand> {
     }
 
     public HandRanking ranking() {
-        return HandRanker.from(this);
+        return HandRanker.rank(this);
     }
 
     public int size() {
